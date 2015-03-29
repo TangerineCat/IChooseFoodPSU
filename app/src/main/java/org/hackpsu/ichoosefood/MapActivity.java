@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapActivity extends ActionBarActivity {
     static final LatLng PSU = new LatLng(40.7948376, -77.8653124);
     private GoogleMap map;
+    private Marker loc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class MapActivity extends ActionBarActivity {
         setContentView(R.layout.activity_map);
         // What does this even do?
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-        Marker pennstate = map.addMarker(new MarkerOptions()
+        loc = map.addMarker(new MarkerOptions()
             .position(PSU)
             .title("Penn State")
             .snippet("Code made here!"));
@@ -58,12 +59,24 @@ public class MapActivity extends ActionBarActivity {
     }
 
     public void getCurrentLocation(View view) {
-        // TODO: implement function to get current location
-        // TODO: move camera and animate!
+        // uncomment following line later
+        //loc.remove();
+        // LatLng newloc = TODO: implement function to get current location
+        //loc = map.addMarker(new MarkerOptions()
+//                .position(TODO: NEW POSITION)
+//                .title("Penn State")
+//                .snippet("Code made here!"));
+
+        //map.moveCamera(CameraUpdateFactory.newLatLngZoom(newloc, 2000));
+
+        // Zoom in, animating the camera :D
+        // map.animateCamera(CameraUpdateFactory.zoomTo(10), 20, null);
     }
 
     public void LocationChosen(View view) {
         Intent intent = new Intent(this, ChooseActivity.class);
+        LatLng ll = loc.getPosition();
+        //intent.putExtra
         startActivity(intent);
         // TODO: pass down coordinates
     }

@@ -12,6 +12,11 @@ public class ChooseActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose);
+
+//        if (savedInstanceState == null) {
+//            getSupportFragmentManager().beginTransaction()
+//                .add(R.id.container, new PlaceholderFragment()).commit();
+//        }
     }
 
 
@@ -36,4 +41,16 @@ public class ChooseActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+//    public static class PlaceholderFragment extends Fragment {
+//        public PlaceholderFragment() { }
+//
+//        @Override
+//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                                 Bundle savdInstanceState) {
+//            View rootView = inflater.inflate(R.layout.fragment_display_message,
+//                    container, false);
+//            return rootView;
+//        }
+//    }
 }
