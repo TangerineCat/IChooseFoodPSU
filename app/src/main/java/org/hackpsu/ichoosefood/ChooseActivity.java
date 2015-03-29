@@ -4,14 +4,19 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.content.Intent;
+
+
+
 
 public class ChooseActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null){
+            // TODO
+        }
         setContentView(R.layout.activity_choose);
 
 //        if (savedInstanceState == null) {
@@ -19,7 +24,6 @@ public class ChooseActivity extends ActionBarActivity {
 //                .add(R.id.container, new PlaceholderFragment()).commit();
 //        }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

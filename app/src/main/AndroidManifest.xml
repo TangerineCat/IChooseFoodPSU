@@ -44,7 +44,10 @@
         </activity>
         <activity
             android:name=".ChooseActivity"
-            android:label="@string/title_activity_choose" >
+            android:label="@string/title_activity_choose">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.hackpsu.ichoosefood.MapActivity" />
         </activity>
         <activity
             android:name=".ResultActivity"
