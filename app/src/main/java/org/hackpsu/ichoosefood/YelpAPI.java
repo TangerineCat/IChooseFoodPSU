@@ -66,7 +66,7 @@ public class YelpAPI {
     public String searchNearbyLocation(double lng, double lat, int radius) {
         OAuthRequest request = createOAuthRequest(SEARCH_PATH);
         request.addQuerystringParameter("term", "food");
-        request.addQuerystringParameter("radius_filter",String.valueOf(radius));
+        request.addQuerystringParameter("radius-filter",String.valueOf(radius));
         request.addQuerystringParameter("ll", String.valueOf(lat) + "," + String.valueOf(lng));
         request.addQuerystringParameter("limit", String.valueOf(SEARCH_LIMIT));
         return sendRequestAndGetResponse(request);
