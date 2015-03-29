@@ -76,7 +76,9 @@ public class MapActivity extends ActionBarActivity {
     public void LocationChosen(View view) {
         Intent intent = new Intent(this, ChooseActivity.class);
         LatLng ll = loc.getPosition();
-        //intent.putExtra
+        intent.putExtra("LONGITUDE",ll.longitude);
+        intent.putExtra("LATITUDE",ll.latitude);
+
         startActivity(intent);
         // TODO: pass down coordinates
     }
