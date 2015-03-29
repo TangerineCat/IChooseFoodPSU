@@ -1,23 +1,40 @@
 package org.hackpsu.ichoosefood;
 
 import android.content.Intent;
+import android.location.Location;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.location.FusedLocationProviderApi;
 
-public class MapActivity extends ActionBarActivity {
-    static final LatLng PSU = new LatLng(40.7948376, -77.8653124);
+public class MapActivity extends ActionBarActivity implements
+        LocationListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
+    static final LatLng PSU = new LatLng(40.7948376, -80.8653124);
     private GoogleMap map;
     private Marker loc;
+    private GoogleApiClient mGoogleApiClient;
+    LocationRequest mLocationRequest;
+    Location mCurrentLocation;
+    FusedLocationProviderApi fusedLocationProviderApi = LocationServices.FusedLocationApi;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +48,59 @@ public class MapActivity extends ActionBarActivity {
             .snippet("Code made here!"));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(PSU, 2000));
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
+
         // Zoom in, animating the camera :D
         map.animateCamera(CameraUpdateFactory.zoomTo(10), 20, null);
     }
 
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(1000 * 10);
+        mLocationRequest.setFastestInterval(1000 * 5);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i)
+    {}
+
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        startLocationUpdates();
+    }
+
+    protected void startLocationUpdates() {
+        PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) { }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mCurrentLocation = location;
+
+        loc.remove();
+
+        LatLng newLoc = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+
+        loc = map.addMarker(new MarkerOptions()
+                .position(newLoc)
+                .title("User Location")
+                .snippet("Please Work!"));
+
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(newLoc, 2000));
+
+        // Zoom in, animating the camera :D
+        map.animateCamera(CameraUpdateFactory.zoomTo(10), 20, null);
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -58,19 +124,31 @@ public class MapActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        mGoogleApiClient.disconnect();
+    }
+
     public void getCurrentLocation(View view) {
         // uncomment following line later
-        //loc.remove();
-        // LatLng newloc = TODO: implement function to get current location
-        //loc = map.addMarker(new MarkerOptions()
-//                .position(TODO: NEW POSITION)
-//                .title("Penn State")
-//                .snippet("Code made here!"));
+        loc.remove();
 
-        //map.moveCamera(CameraUpdateFactory.newLatLngZoom(newloc, 2000));
+        mCurrentLocation = fusedLocationProviderApi.getLastLocation(mGoogleApiClient);
+
+
+        LatLng newLoc = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+
+        loc = map.addMarker(new MarkerOptions()
+                .position(newLoc)
+                .title("User Location")
+                .snippet("Please Work!"));
+
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(newLoc, 2000));
 
         // Zoom in, animating the camera :D
-        // map.animateCamera(CameraUpdateFactory.zoomTo(10), 20, null);
+        map.animateCamera(CameraUpdateFactory.zoomTo(10), 20, null);
     }
 
     public void LocationChosen(View view) {
