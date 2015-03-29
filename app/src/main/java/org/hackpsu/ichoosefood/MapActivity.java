@@ -1,9 +1,11 @@
 package org.hackpsu.ichoosefood;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -54,5 +56,16 @@ public class MapActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void getCurrentLocation(View view) {
+        // TODO: implement function to get current location
+        // TODO: move camera and animate!
+    }
+
+    public void LocationChosen(View view) {
+        Intent intent = new Intent(this, ResultActivity.class);
+        startActivity(intent);
+        // TODO: pass down coordinates
     }
 }
