@@ -19,9 +19,9 @@ public class ListFragment extends Fragment
 {
     public static final String ARG_SECTION_NUMBER = "section_number";
 
-    static private ArrayList<String> names;
-    ListView mListView;
-    View rootView;
+    private ListView mListView;
+    private View rootView;
+    private ArrayList<String> names  = new ArrayList<String>();
 
     public static ListFragment newInstance(int sectionNumber)
     {
@@ -43,11 +43,6 @@ public class ListFragment extends Fragment
 
         mListView = (ListView) rootView.findViewById(R.id.tasks_list_view);
 
-        if(names == null) {
-            names = new ArrayList<String>();
-            names.add("You");
-        }
-
         ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(
             getActivity(),
             android.R.layout.simple_list_item_1,
@@ -59,16 +54,16 @@ public class ListFragment extends Fragment
         return rootView;
     }
 
-    public void addMember(String name)
+    public ArrayList<String> getNames()
     {
-        names.add(name);
-        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                names
-        );
-
-        mListView.setAdapter(mArrayAdapter);
+        return names;
     }
+
+    public void setNames(ArrayList<String> unames)
+    {
+        names = unames;
+    }
+
+
 
 }

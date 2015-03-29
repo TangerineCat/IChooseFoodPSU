@@ -23,6 +23,7 @@ public class MainActivity extends ActionBarActivity {
 
     static int position =0;
     Menu mMenu;
+    ListFragment mlistFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +31,9 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         FragmentManager fragmentManager = getFragmentManager();
+        mlistFragment = ListFragment.newInstance(position++);
         fragmentManager.beginTransaction()
-                .replace(R.id.container, ListFragment.newInstance(position++))
+                .replace(R.id.container, mlistFragment)
                 .commit();
 
     }
@@ -55,7 +57,6 @@ public class MainActivity extends ActionBarActivity {
         inflater.inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -68,9 +69,17 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         else if(id == R.id.add_member) {
+            ArrayList<String> meh = mlistFragment.getNames();
+            meh.add("Person " + position++);
+            mlistFragment.setNames(meh);
+
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, ListFragment.newInstance(position++))
+                    .detach(mlistFragment)
+                    .commit();
+
+            fragmentManager.beginTransaction()
+                    .attach(mlistFragment)
                     .commit();
             return true;
         }
